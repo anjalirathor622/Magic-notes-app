@@ -12,17 +12,23 @@ searchNotes.addEventListener('input',searchFunction);  //for search notes
 //function to create/add notes
 function addNoteFuntion(){
     let addtext = document.getElementById("addtext");
+    let addtitle = document.getElementById("addTitle");
     let storedNotes = localStorage.getItem("notes");
-
+        
     if(storedNotes == null){
         allNotes = [];
     }else{
         allNotes = JSON.parse(storedNotes);  // convertnotes to json arraylist
     }
-    allNotes.push(addtext.value);           //push all notes to the array
+    let myNotes = {
+        notestext: addtext.value,
+        notestitle: addtitle.value
+    };
+    allNotes.push(myNotes);           //push all notes to the array
 
     localStorage.setItem("notes", JSON.stringify(allNotes));   //set the notes and convert them to json string
     addtext.value = "";
+    addtitle.value = "";
     showNotes();
 }
 //function to shhow  notes 
@@ -40,8 +46,8 @@ function showNotes() {
     allNotes.forEach(function(element,index){     //looping on notes and generating html for each note
         html += `<div class="noteCard card m-2" style="width: 18rem;">
             <div class="card-body">
-              <h5 class="card-title">MyNote ${index+1}</h5>
-              <p class="card-text">${element}</p>
+              <h5 class="card-title"> ${index+1 + ") " + element.notestitle}</h5>
+              <p class="card-text">${element.notestext}</p>
               <button id="${index}" onclick="deleteNote(this.id)" class="btn btn-primary">delete</button>
             </div>
           </div>`
